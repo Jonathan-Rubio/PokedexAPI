@@ -9,20 +9,48 @@
 <body>
     <h1>Items from API</h1>
     <% const apiUrl = "https://pokeapi.co/api/v2/pokemon-species/"; %>
-    <% if (pokedex.results && pokedex.results.length > 0) { %>
-        <ul>
-            <% pokedex.results.forEach(function(pokemon) { %>
-                <% var pokemonNumber = pokemon.url || JSON.stringify(pokemon.url); %>
-                <% var pokemonId = pokemonNumber.replace(apiUrl, ""); %>
-                <% pokemonId = pokemonId.slice(0,-1); %>
-                <% var pokemonName = pokemon.name || JSON.stringify(pokemon)%>
 
-                <li>#<%= pokemonId%> <%= pokemonName %></li> 
+    <div class="container">
+        <h1>A Pokédex made with PokéApi</h1>
+        <form action="/" id="form" class="form" method="POST">
+            <select name="type" class="form-select">
+                <% if (locals.pokedex) {%>
+                    <% if (pokedex.results && pokedex.results.length > 0) { %>
+                    <% pokedex.results.forEach(function(poke) { %>
+                        <% var pokemonNumber = poke.url || JSON.stringify(poke.url); %>
+                        <% var pokemonId = pokemonNumber.replace(apiUrl, ""); %>
+                        <% pokemonId = pokemonId.slice(0,-1); %>
+                        <% var pokemonName = poke.name || JSON.stringify(poke)%>
+                        <option value=<%= pokemonName%>>#<%= pokemonId%> <%= pokemonName %></option>
+                    <% }); %>
+                    <% }%>
+                <% } %>
+            </select>
+            <button type="submit" class="form-submit">Go</button>
+        </form>
 
-            <% }); %>
-        </ul>
-    <% } else { %>
-        <p>No items found or data is empty.</p>
-    <% } %>
+        <section id="cards" class="cards">
+            <article class="card-item">
+                <% if(locals.pokemon) {%>
+                    <% var pokemonString = JSON.stringify(pokemon); %>
+                    <% var pokePhoto = pokemon.sprites.front_default; %>
+                <h2 class="card-activity">
+                <%= pokemonString %>
+                <%= pokemon.sprites.front_default %>
+                <img src="<%= pokePhoto %>" alt="Pokemon photo" width="300" height="300">
+                </h2>
+            </article>
+            <% } %>
+
+            <% if (locals.error) {%>
+            <div id="tag-error" class="tag-error">
+                <!-- Show any errors that were sent from the backend -->
+                <%= error %>
+            </div>
+            <% } %>
+
+        </section>
+    </div>
+
 </body> 
 </html>

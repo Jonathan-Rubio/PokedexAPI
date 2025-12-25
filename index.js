@@ -12,11 +12,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", async(req, res) => {
     try {
         const response = await axios.get(API_URL + "-species?limit=100000&offset=0");
-        const items = response.data;
+        const result = response.data;
+        res.render("index.ejs", {pokedex: result});
 
-        res.render("index.ejs", {pokedex: items});
     } catch (error) {
-        console.error(`error`, {message: `Failed to load data`});
+        console.error("Failed to make request:", error.message);
+        res.render("index.ejs", {error: error.message});
+    }
+});
+
+app.post("/", async(req, res) => {
+    const queryPokemon = req.body.type;
+    try {
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${queryPokemon}`);
+        const result = response.data;
+        res.render("index.ejs", {pokemon: result});
+    } catch (error) {
+        console.error("Failed to make request:", error.message);
+        res.render("index.ejs", {error: error.message});
     }
 });
 
