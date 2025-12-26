@@ -4,14 +4,14 @@ import bodyParser from "body-parser";
 
 const app = express();
 const port = 3000;
-const API_URL = "https://pokeapi.co/api/v2/pokemon";
+const API_URL = "https://pokeapi.co/api/v2/pokemon-species";
 
 app.use (express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", async(req, res) => {
     try {
-        const response = await axios.get(API_URL + "-species?limit=100000&offset=0");
+        const response = await axios.get(API_URL + "?limit=100000&offset=0");
         const result = response.data;
         res.render("index.ejs", {pokedex: result});
 
@@ -23,10 +23,18 @@ app.get("/", async(req, res) => {
 
 app.post("/", async(req, res) => {
     const queryPokemon = req.body.type;
+    // console.log(queryPokemon);
     try {
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${queryPokemon}`);
+        const response2 = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${queryPokemon}`)
         const result = response.data;
-        res.render("index.ejs", {pokemon: result});
+        const result2 = response2.data;
+        // console.log(response.data);
+        // console.log(result2);
+        res.render("index.ejs", {
+            pokemon: result,
+            entry: result2
+        });
     } catch (error) {
         console.error("Failed to make request:", error.message);
         res.render("index.ejs", {error: error.message});
