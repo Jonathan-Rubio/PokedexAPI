@@ -12,7 +12,9 @@ const API_URL = "https://pokeapi.co/api/v2/pokemon-species";
 app.use (express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// 
+// Setting get request from express and axios to home page
+// First it waits for axios to get the url without the limit pokemon number
+// Then it catches that response data and it renders it to index.ejs
 app.get("/", async(req, res) => {
     try {
         const response = await axios.get(API_URL + "?limit=100000&offset=0");
@@ -25,6 +27,9 @@ app.get("/", async(req, res) => {
     }
 });
 
+// Setting post request from express
+// It catches what pokemon the user clicks with queryPokemon and sets axios to get the dex entry, pokemon name and number
+// It renders that response data into index.ejs
 app.post("/", async(req, res) => {
     const queryPokemon = req.body.type;
     // console.log(queryPokemon);
@@ -45,6 +50,7 @@ app.post("/", async(req, res) => {
     }
 });
 
+// Setting express to listen port 3000
 app.listen(port,() => {
     console.log(`Server is running on port ${port}`);
 });
