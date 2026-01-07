@@ -91,13 +91,14 @@ background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(148, 187, 23
   </style>
 </head>
 <body>
+// Adding constant variables for URLs
     <% const apiUrl = "https://pokeapi.co/api/v2/pokemon-species/"; %>
     <% const pokeUrl= "https://pokeapi.co/api/v2/pokemon-form/" %>
 
+//Creating a form action dropdown menu to select the pokemon the user wants to see
   <div class="background">
     <div class="container">
       <h1>A Pokédex made with PokéApi</h1>
-
       <form action="/" id="form" class="form" method="POST">
         <select name="type" class="form-select">
           <option value="1">#1 Bulbasaur</option>
@@ -1129,6 +1130,8 @@ background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(148, 187, 23
         <button type="submit" class="form-submit">Go</button>
       </form>
 
+    // If statement that looks if the data is available
+    // Then it shows the pokemon photo, name and id
       <% if(locals.pokemon) {%>
         <% var pokePhoto = pokemon.sprites.front_default; %>
         <img src="<%= pokePhoto %>" alt="Pokemon photo" style="align-self: center;" width="300" height="300">
@@ -1138,7 +1141,9 @@ background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(148, 187, 23
           <%= (pokemon.species.name)[0].toUpperCase() %><%= (pokemon.species.name).slice(1) %>
         </h2>
       <% } %>
-      
+
+    // If statement that looks if the data is available
+    // Then it shows the pokemon entry with english language
       <% if(locals.entry) {%>
         <% const englishEntry = entry.flavor_text_entries.find(entry => entry.language.name === 'en');%>
         <div><%= englishEntry.flavor_text %></div>
